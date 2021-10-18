@@ -18,10 +18,15 @@ from django.urls import path
 from students.views import hello_students
 from groups.views import hello_groups
 from teachers.views import hello_teacher
+from students.views import get_students
+from teachers.views import get_teachers
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('students/', hello_students),
     path('groups/', hello_groups),
     path('teachers/', hello_teacher),
+    path('students_get/', get_students),
+    path('get_teachers/', get_teachers),
+
 ]
