@@ -11,26 +11,26 @@ def hello_students(request):
     return HttpResponse('SUCCESS')
 
 
-@use_kwargs(
+@use_args(
     {
         "first_name": fields.Str(
             required=False,
-            missing=None,
+
         ),
         "last_name": fields.Str(
             required=False,
-            missing=None,
+
         ),
     },
     location="query",
 )
-def get_students(request, first_name, last_name):
+def get_students(request, params):
 
     students = Student.objects.all()
-    if first_name:
-        students = students.filter(first_name=first_name)
-    if last_name:
-        students = students.filter(last_name=last_name)
+    for param_name, param_val in params.items():
+        students = students.filter(**{param_name: param_val})
+
     result = format_records(students)
+
     return HttpResponse(result)
 

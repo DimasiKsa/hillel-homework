@@ -11,37 +11,31 @@ from webargs import fields
 def hello_teacher(request):
     return HttpResponse('SUCCESS')
 
-@use_kwargs(
+@use_args(
     {
         "first_name": fields.Str(
             required=False,
-            missing=None,
+
         ),
         "last_name": fields.Str(
             required=False,
-            missing=None,
+
         ),
         "email": fields.Str(
             required=False,
-            missing=None,
+
         ),
         "birthdate": fields.Str(
             required=False,
-            missing=None,
+
         ),
     },
     location="query",
 )
-def get_teachers(request, first_name, last_name, email, birthdate):
+def get_teachers(request, params):
 
-    students = Teacher.objects.all()
-    if first_name:
-        students = students.filter(first_name=first_name)
-    if last_name:
-        students = students.filter(last_name=last_name)
-    if email:
-        students = students.filter(email=email)
-    if birthdate:
-        students = students.filter(birthdate=birthdate)
-    result = format_records(students)
+    teachers = Teacher.objects.all()
+    for param_name, param_val in params.items():
+        teachers = teachers.filter(**{param_name: param_val})
+    result = format_records(teachers)
     return HttpResponse(result)

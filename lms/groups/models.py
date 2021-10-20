@@ -3,6 +3,7 @@ from django.db import models
 from faker import Faker
 # Create your models here.
 
+
 class Group(models.Model):
     first_name = models.CharField(max_length=60, null=False)
     last_name = models.CharField(max_length=80, null=False)
