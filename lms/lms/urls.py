@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from students.views import hello_students
-from groups.views import hello_groups
-from teachers.views import hello_teacher
-from students.views import get_students
-from teachers.views import get_teachers
+from students.views import create_student, hello_students, get_students
+from groups.views import hello_groups, get_groups, create_groups
+from teachers.views import hello_teacher, get_teachers, create_teacher
+import debug_toolbar
+from django.conf import settings
+from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +29,9 @@ urlpatterns = [
     path('teachers/', hello_teacher),
     path('students_get/', get_students),
     path('get_teachers/', get_teachers),
-
+    path('create_student/', create_student),
+    path('create_teacher/', create_teacher),
+    path('get_groups/', get_groups),
+    path('create_groups/', create_groups),
+    path('__debug__/', include(debug_toolbar.urls)),
 ]

@@ -1,5 +1,4 @@
 from django.db import models
-# Create your models here.
 import datetime
 from faker import Faker
 

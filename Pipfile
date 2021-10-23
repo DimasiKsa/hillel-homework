@@ -7,6 +7,13 @@ name = "pypi"
 django = "*"
 faker = "*"
 ipython = "*"
+django-extensions = "*"
+webargs = "*"
+flake8 = "*"
+flake8-builtins = "*"
+flake8-import-order = "*"
+pep8-naming = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 

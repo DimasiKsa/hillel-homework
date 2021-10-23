@@ -10,7 +10,7 @@ class Group(models.Model):
     num_group = models.CharField(max_length=5, null=False)
 
     def __str__(self):
-        return f'{self.full_name()}, {self.age()}, {self.email} ({self.id})'
+        return f'{self.full_name()}, {self.num_group}'
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
