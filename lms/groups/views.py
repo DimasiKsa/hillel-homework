@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from webargs.djangoparser import use_kwargs, use_args, parser
 from webargs import fields
@@ -34,10 +35,10 @@ def hello_groups(request):
     location="query",
 )
 def get_groups(request, params):
-    teachers = Group.objects.all().order_by('-id')
+    teacher_group = Group.objects.all().order_by('-id')
     for param_name, param_val in params.items():
-        teachers = teachers.filter(**{param_name: param_val})
-    result = format_records(teachers)
+        teacher_group = teacher_group.filter(**{param_name: param_val})
+    result = format_records(teacher_group)
     return HttpResponse(result)
 
 
@@ -48,7 +49,7 @@ def create_groups(request):
         form = GroupCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/get_groups')
+            return HttpResponseRedirect((reverse('groups:list')))
 
     elif request.method == 'GET':
         form = GroupCreateForm()
@@ -57,6 +58,30 @@ def create_groups(request):
     <form method="POST">
       {form.as_p()}
       <input type="submit" value="Create">
+    </form>
+    """
+
+    return HttpResponse(form_html)
+
+
+@csrf_exempt
+def update_group(request, pk):
+
+    groups = get_object_or_404(Group, id=pk)
+
+    if request.method == 'POST':
+        form = GroupCreateForm(request.POST, instance=groups)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect((reverse('groups:list')))
+
+    elif request.method == 'GET':
+        form = GroupCreateForm(instance=groups)
+
+    form_html = f"""
+    <form method="POST">
+      {form.as_p()}
+      <input type="submit" value="Save">
     </form>
     """
 

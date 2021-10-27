@@ -1,7 +1,8 @@
 from django.core.exceptions import BadRequest
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from students.models import Student
 from students.utils import format_records
@@ -73,7 +74,7 @@ def create_student(request):
         form = StudentCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/students_get')
+            return HttpResponseRedirect((reverse('students:list')))
 
     elif request.method == 'GET':
         form = StudentCreateForm()
@@ -82,6 +83,30 @@ def create_student(request):
     <form method="POST">
       {form.as_p()}
       <input type="submit" value="Create">
+    </form>
+    """
+
+    return HttpResponse(form_html)
+
+
+@csrf_exempt
+def update_student(request, pk):
+
+    student = get_object_or_404(Student, id=pk)
+
+    if request.method == 'POST':
+        form = StudentCreateForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect((reverse('students:list')))
+
+    elif request.method == 'GET':
+        form = StudentCreateForm(instance=student)
+
+    form_html = f"""
+    <form method="POST">
+      {form.as_p()}
+      <input type="submit" value="Save">
     </form>
     """
 
