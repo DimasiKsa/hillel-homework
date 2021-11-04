@@ -5,5 +5,4 @@ from teachers.models import Teacher
 class TeacherCreateForm(ModelForm):
     class Meta:
         model = Teacher
-        fields = ['first_name', 'last_name', 'email', 'birthdate']
-
+        fields = ["first_name", "last_name", "email", "birthdate"]

@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('groups', '0002_rename_groups_group'),
+        ("groups", "0002_rename_groups_group"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='group',
-            name='group_name',
+            model_name="group",
+            name="group_name",
         ),
         migrations.AddField(
-            model_name='group',
-            name='num_group',
+            model_name="group",
+            name="num_group",
             field=models.IntegerField(default=1),
             preserve_default=False,
         ),

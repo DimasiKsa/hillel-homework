@@ -1,6 +1,7 @@
 import random
 from django.db import models
 from faker import Faker
+
 # Create your models here.
 
 
@@ -10,10 +11,10 @@ class Group(models.Model):
     num_group = models.CharField(max_length=5, null=False)
 
     def __str__(self):
-        return f'{self.full_name()}, {self.num_group}, id {self.id}'
+        return f"{self.full_name()}, {self.num_group}, id {self.id}"
 
     def full_name(self):
-        return f'{self.first_name} {self.last_name}'
+        return f"{self.first_name} {self.last_name}"
 
     @classmethod
     def generate_groups(cls, count):

@@ -8,11 +8,17 @@ from students.models import Student
 from students.utils import format_records
 from webargs.djangoparser import use_kwargs, use_args, parser
 from webargs import fields
-from students.forms import StudentCreateForm, StudentGetForm
+from students.forms import StudentCreateForm, StudentUpdateForm
 
 
 def hello_students(request):
-    return HttpResponse('SUCCESS')
+    return render(
+        request=request,
+        template_name="index.html",
+        context={
+            "param": "some text"
+        }
+    )
 
 
 @parser.error_handler
@@ -24,69 +30,54 @@ def handle_error(error, req, schema, *, error_status_code, error_headers):
     {
         "first_name": fields.Str(
             required=False,
-
         ),
-        "text": fields.Str(
-             required=False
-         ),
+        "text": fields.Str(required=False),
     },
     location="query",
 )
 def get_students(request, params):
 
-    form = """
-    <form >
-      <label>First name:</label><br>
-      <input type="text" name="first_name"><br>
+    students = Student.objects.all().order_by("id")
 
-      <label>Text:</label><br>
-      <input type="text" name="text" placeholder="Enter text to search"><br><br>
-
-      <input type="submit" value="Search">
-    </form>
-    """
-
-    students = Student.objects.all().order_by('-id')
-
-    text_fields = ['first_name', 'last_name', 'email']
+    text_fields = ["first_name", "last_name", "email"]
 
     for param_name, param_value in params.items():
         if param_value:
-            if param_name == 'text':
+            if param_name == "text":
                 or_filter = Q()
                 for field in text_fields:
-                    or_filter |= Q(**{f'{field}__contains': param_value})
+                    or_filter |= Q(**{f"{field}__contains": param_value})
                 students = students.filter(or_filter)
             else:
                 students = students.filter(**{param_name: param_value})
 
-    result = format_records(students)
-
-    response = form + result
-
-    return HttpResponse(response)
+    return render(
+            request=request,
+            template_name="students_table.html",
+            context={
+                "students": students
+            }
+        )
 
 
 @csrf_exempt
 def create_student(request):
-
-    if request.method == 'POST':
+    if request.method == "POST":
         form = StudentCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect((reverse('students:list')))
+            return HttpResponseRedirect(reverse("students:list"))
 
-    elif request.method == 'GET':
+    elif request.method == "GET":
         form = StudentCreateForm()
 
-    form_html = f"""
-    <form method="POST">
-      {form.as_p()}
-      <input type="submit" value="Create">
-    </form>
-    """
-
-    return HttpResponse(form_html)
+    return render(
+        request=request,
+        template_name="students_create.html",
+        context={
+            "form": form
+        }
+    )
 
 
 @csrf_exempt
@@ -94,20 +85,31 @@ def update_student(request, pk):
 
     student = get_object_or_404(Student, id=pk)
 
-    if request.method == 'POST':
-        form = StudentCreateForm(request.POST, instance=student)
+    if request.method == "POST":
+        form = StudentUpdateForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect((reverse('students:list')))
+            return HttpResponseRedirect((reverse("students:list")))
 
-    elif request.method == 'GET':
-        form = StudentCreateForm(instance=student)
+    elif request.method == "GET":
+        form = StudentUpdateForm(instance=student)
 
-    form_html = f"""
-    <form method="POST">
-      {form.as_p()}
-      <input type="submit" value="Save">
-    </form>
-    """
+    return render(
+        request=request,
+        template_name="students_update.html",
+        context={
+            "form": form
+        }
+    )
 
-    return HttpResponse(form_html)
+
+def delete_student(request, pk):
+    student = get_object_or_404(Student, id=pk)
+    student.delete()
+
+    return HttpResponseRedirect(reverse("students:list"))
+
+
+def view_404(request, exception):
+    return render(request, "404.html")
+

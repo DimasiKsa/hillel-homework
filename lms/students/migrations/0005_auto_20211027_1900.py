@@ -7,18 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0004_auto_20211027_1856'),
+        ("students", "0004_auto_20211027_1856"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='password1',
-            field=models.CharField(default='', max_length=60, validators=[django.core.validators.MinLengthValidator(8)]),
+            model_name="student",
+            name="password1",
+            field=models.CharField(
+                default="",
+                max_length=60,
+                validators=[django.core.validators.MinLengthValidator(8)],
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='password2',
-            field=models.CharField(default='', max_length=60, validators=[django.core.validators.MinLengthValidator(8)]),
+            model_name="student",
+            name="password2",
+            field=models.CharField(
+                default="",
+                max_length=60,
+                validators=[django.core.validators.MinLengthValidator(8)],
+            ),
         ),
     ]

@@ -16,11 +16,11 @@ Including another URLconf
 from teachers.views import hello_teacher, get_teachers, create_teacher, update_teacher
 from django.urls import path
 
-app_name = 'teachers'
+app_name = "teachers"
 
 urlpatterns = [
-    path('', hello_teacher, name='hello'),
-    path('teachers/', get_teachers, name='list'),
-    path('create_teacher/', create_teacher, name='crate'),
-    path('update_teachers/<int:pk>/', update_teacher, name='update'),
+    path("", hello_teacher, name="hello"),
+    path("teachers/", get_teachers, name="list"),
+    path("create_teacher/", create_teacher, name="crate"),
+    path("update_teachers/<int:pk>/", update_teacher, name="update"),
 ]

@@ -8,23 +8,31 @@ import students.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0001_initial'),
+        ("students", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='email',
-            field=models.EmailField(max_length=120, null=True, validators=[students.validators.no_elon_validator]),
+            model_name="student",
+            name="email",
+            field=models.EmailField(
+                max_length=120,
+                null=True,
+                validators=[students.validators.no_elon_validator],
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='first_name',
-            field=models.CharField(max_length=60, validators=[django.core.validators.MinLengthValidator(2)]),
+            model_name="student",
+            name="first_name",
+            field=models.CharField(
+                max_length=60, validators=[django.core.validators.MinLengthValidator(2)]
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='last_name',
-            field=models.CharField(max_length=80, validators=[django.core.validators.MinLengthValidator(2)]),
+            model_name="student",
+            name="last_name",
+            field=models.CharField(
+                max_length=80, validators=[django.core.validators.MinLengthValidator(2)]
+            ),
         ),
     ]

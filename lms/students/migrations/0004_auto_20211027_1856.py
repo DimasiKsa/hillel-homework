@@ -7,18 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0003_alter_student_email'),
+        ("students", "0003_alter_student_email"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='student',
-            name='password1',
-            field=models.CharField(default='12345678', max_length=60, validators=[django.core.validators.MinLengthValidator(8)]),
+            model_name="student",
+            name="password1",
+            field=models.CharField(
+                default="12345678",
+                max_length=60,
+                validators=[django.core.validators.MinLengthValidator(8)],
+            ),
         ),
         migrations.AddField(
-            model_name='student',
-            name='password2',
-            field=models.CharField(default='12345678', max_length=60, validators=[django.core.validators.MinLengthValidator(8)]),
+            model_name="student",
+            name="password2",
+            field=models.CharField(
+                default="12345678",
+                max_length=60,
+                validators=[django.core.validators.MinLengthValidator(8)],
+            ),
         ),
     ]

@@ -7,13 +7,18 @@ import students.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0002_auto_20211024_2020'),
+        ("students", "0002_auto_20211024_2020"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='email',
-            field=models.EmailField(max_length=120, null=True, unique=True, validators=[students.validators.no_elon_validator]),
+            model_name="student",
+            name="email",
+            field=models.EmailField(
+                max_length=120,
+                null=True,
+                unique=True,
+                validators=[students.validators.no_elon_validator],
+            ),
         ),
     ]

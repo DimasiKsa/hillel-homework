@@ -6,18 +6,22 @@ from students.validators import no_elon_validator
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=60, null=False, validators=[MinLengthValidator(2)])
-    last_name = models.CharField(max_length=80, null=False, validators=[MinLengthValidator(2)])
-    email = models.EmailField(max_length=120, null=True, validators=[no_elon_validator], unique=True)
+    first_name = models.CharField(
+        max_length=60, null=False, validators=[MinLengthValidator(2)]
+    )
+    last_name = models.CharField(
+        max_length=80, null=False, validators=[MinLengthValidator(2)]
+    )
+    email = models.EmailField(
+        max_length=120, null=True, validators=[no_elon_validator], unique=True
+    )
     birthdate = models.DateField(null=True, default=datetime.date.today)
-    password1 = models.CharField(max_length=60, null=False, validators=[MinLengthValidator(8)], default='')
-    password2 = models.CharField(max_length=60, null=False, validators=[MinLengthValidator(8)], default='')
 
     def __str__(self):
-        return f'{self.full_name()}, {self.age()}, {self.email} ({self.id})'
+        return f"{self.full_name()}, {self.age()}, {self.email} ({self.id})"
 
     def full_name(self):
-        return f'{self.first_name} {self.last_name}'
+        return f"{self.first_name} {self.last_name}"
 
     def age(self):
         return datetime.datetime.now().year - self.birthdate.year

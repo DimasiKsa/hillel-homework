@@ -16,33 +16,29 @@ def handle_error(error, req, schema, *, error_status_code, error_headers):
 
 
 def hello_teacher(request):
-    return HttpResponse('SUCCESS')
+    return HttpResponse("SUCCESS")
 
 
 @parser.use_args(
     {
         "first_name": fields.Str(
             required=False,
-
         ),
         "last_name": fields.Str(
             required=False,
-
         ),
         "email": fields.Str(
             required=False,
-
         ),
         "birthdate": fields.Str(
             required=False,
-
         ),
     },
     location="query",
 )
 def get_teachers(request, params):
 
-    teachers = Teacher.objects.all().order_by('-id')
+    teachers = Teacher.objects.all().order_by("-id")
     for param_name, param_val in params.items():
         teachers = teachers.filter(**{param_name: param_val})
     result = format_records(teachers)
@@ -52,13 +48,13 @@ def get_teachers(request, params):
 @csrf_exempt
 def create_teacher(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = TeacherCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect((reverse('teachers:list')))
+            return HttpResponseRedirect((reverse("teachers:list")))
 
-    elif request.method == 'GET':
+    elif request.method == "GET":
         form = TeacherCreateForm()
 
     form_html = f"""
@@ -77,13 +73,13 @@ def update_teacher(request, pk):
 
     teacher = get_object_or_404(Teacher, id=pk)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = TeacherCreateForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect((reverse('teachers:list')))
+            return HttpResponseRedirect((reverse("teachers:list")))
 
-    elif request.method == 'GET':
+    elif request.method == "GET":
         form = TeacherCreateForm(instance=teacher)
 
     form_html = f"""
