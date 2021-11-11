@@ -1,3 +1,4 @@
+import uuid
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.db import models
 import datetime
@@ -5,7 +6,8 @@ from faker import Faker
 from students.validators import no_elon_validator
 
 
-class Student(models.Model):
+class Person(models.Model):
+
     first_name = models.CharField(
         max_length=60, null=False, validators=[MinLengthValidator(2)]
     )
@@ -17,8 +19,18 @@ class Student(models.Model):
     )
     birthdate = models.DateField(null=True, default=datetime.date.today)
 
+    class Meta:
+        abstract = True
+
+
+class Student(Person):
+
+    course = models.ForeignKey('students.Course',
+                               null=True,
+                               on_delete=models.SET_NULL)
+
     def __str__(self):
-        return f"{self.full_name()}, {self.age()}, {self.email} ({self.id})"
+        return f"{self.full_name()}, {self.age()}, {self.email} id({self.id})"
 
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -37,3 +49,28 @@ class Student(models.Model):
                 birthdate=faker.date_time_between(start_date="-30y", end_date="-18y"),
             )
             st.save()
+
+
+class Course(models.Model):
+
+    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+
+    name = models.CharField(null=False, max_length=120)
+
+    start_date = models.DateField(null=True, default=datetime.date.today)
+
+    count_of_students = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Teacher(Person):
+    course = models.ManyToManyField(to="students.Course",
+                                    related_name="teachers")
+
+    def __str__(self):
+        return f"{self.full_name()} {self.email} ({self.id}), {self.course}"
+
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"

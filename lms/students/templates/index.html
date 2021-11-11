@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Bootstrap уроки</title>
+  <title>{% block title %} Home  {% endblock %}</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
@@ -34,6 +34,15 @@
               <li><a href="#">Что-то еще</a></li>
               <li><a href="#">Отдельная ссылка</a></li>
               <li><a href="#">Еще одна отдельная ссылка</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teacher<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'students:teachers' %}">All teachers table</a></li>
+
+              <li><a href="{% url 'students:teachers_create' %}">Teachers create</a></li>
+
             </ul>
           </li>
         </ul>
