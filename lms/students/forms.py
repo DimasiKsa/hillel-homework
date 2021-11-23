@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm, DateInput
 from django.core.exceptions import ValidationError
-from students.models import Student, Teacher
+from students.models import Student
 import datetime
 
 
@@ -13,7 +13,9 @@ class StudentCreateForm(ModelForm):
             "last_name",
             "email",
             "birthdate",
-            "course"
+            "course",
+            "avatar_image",
+            "summary"
         ]
         birthdate = {"birthdate": DateInput()}
 
@@ -68,17 +70,5 @@ class StudentGetForm(ModelForm):
 
 class StudentUpdateForm(StudentCreateForm):
     class Meta(StudentCreateForm.Meta):
-        fields = ["first_name", "last_name", "birthdate", "course"]
+        fields = ["avatar_image", "first_name", "last_name", "birthdate", "course", "summary"]
 
-
-class TeacherBaseForm(StudentCreateForm):
-    class Meta:
-        model = Teacher
-        fields = [
-            "first_name",
-            "last_name",
-            "email",
-            "birthdate",
-            "course"
-        ]
-        birthdate = {"birthdate": DateInput()}
