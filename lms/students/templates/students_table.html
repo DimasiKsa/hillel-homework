@@ -1,0 +1,68 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Students {% endblock  %}
+
+{% block content %}
+    <form  method="get">
+    <label for="featured">Courses</label>
+    <select name="featured">
+        {% for course in courses %}
+        <option value= {{ course.name }} />{{ course.name }}</option>
+        {% endfor %}
+        <option value="" />All students</option>
+    </select>
+     <input class="btn btn-info" type="submit" value="Filter"/>
+    </form>
+
+    <table class="table table-dark table-hover">
+        <thead>
+        <tr>
+
+        </tr>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Avatar</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Birthdate</th>
+            <th scope="col">Age</th>
+            <th scope="col">Course</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+
+                <th scope="row">{{ student.id }}</th>
+                <td>
+                    {% if student.avatar_image %}
+                    <img src="{{ student.avatar_image.url }}" width="70" height="80" >
+                    {% endif %}
+                </td>
+                <td>{{ student.first_name }}</td>
+
+                <td>{{ student.last_name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.birthdate }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.course }}</td>
+                <td>
+                    {% if student.summary %}
+                    <a href="{{ student.summary.url }}">Download</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a type="button" class="btn btn-danger" href="{% url 'students:delete' pk=student.id %}">Delete</a>
+                </td>
+                <td>
+                    <a type="button" class="btn btn-success" href="{% url 'students:update' pk=student.id %}">Update</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
