@@ -1,16 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import BadRequest
-from django.db.models import Q
 from django.forms.utils import ErrorList
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, DeleteView
 from students.models import Student
-from webargs.djangoparser import use_kwargs, use_args, parser
-from webargs import fields
-from students.forms import StudentCreateForm, StudentUpdateForm
 from courses.models import Course
 
 
@@ -18,49 +11,30 @@ class IndexPage(LoginRequiredMixin, TemplateView):
     template_name = "index.html"
 
 
-@parser.error_handler
-def handle_error(error, req, schema, *, error_status_code, error_headers):
-    raise BadRequest(error.messages)
+class GetStudent(TemplateView):
+    model = Student
+    template_name = "students_table.html"
+    success_url = reverse_lazy("students:list")
 
-
-# class GetStudent(TemplateView):
-#     model = Student
-#     template_name = "students_table.html"
-#     success_url = reverse_lazy("students:list")
-#
-#     def get(self, request, *args, **kwargs):
-#         query = request.GET.get('featured')
-#         selected_course = Course.objects.get(name=request.GET.get('featured')).id
-#             return Student.objects.filter(course=selected_course)
-#         else:
-#             return Student.objects.all().order_by("id")
-@parser.use_args(
-    {
-        "first_name": fields.Str(
-            required=False,
-        ),
-        "text": fields.Str(required=False),
-    },
-    location="query",
-)
-def get_students(request, params):
-
-    course = Course.objects.all()
-    if request.GET.get('featured'):
-        selected_course = Course.objects.get(name=request.GET.get('featured')).id
-        students = Student.objects.filter(course=selected_course)
-    else:
-        students = Student.objects.all().order_by("id")
-        selected_course = ''
-    return render(
-            request=request,
-            template_name="students_table.html",
-            context={
+    def get(self, request, *args, **kwargs):
+        course = Course.objects.all()
+        if request.GET.get('featured'):
+            selected_course = Course.objects.get(name=request.GET.get('featured')).id
+            students = Student.objects.filter(course=selected_course)
+            context = {
                 "students": students,
                 "courses": course,
                 "selected_course": selected_course
             }
-        )
+        else:
+            students = Student.objects.all().order_by("id")
+            context = {
+                "students": students,
+                "courses": course
+            }
+
+        return render(request, 'students_table.html', context)
+
 
 class CreateStudent(CreateView):
     # form_class = StudentCreateForm
@@ -97,7 +71,7 @@ class UpdateStudent(UpdateView):
 
 class DeleteStudent(DeleteView):
     model = Student
-    template_name = "students_table.html"
+    template_name = "student_delete.html"
     success_url = reverse_lazy("students:list")
 
 
