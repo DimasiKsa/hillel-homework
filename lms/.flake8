@@ -1,0 +1,4 @@
+[flake8]
+exclude=migrations
+max-line-length=120
+ignore=I101,I100,F401,I201,E131,E121,E126,E303,E302
