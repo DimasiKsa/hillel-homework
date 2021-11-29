@@ -46,9 +46,7 @@
                 {% endif %}
             </ul>
           </li>
-              <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration' %}">Registration</a>
-                  </li>
+
             {% if user.is_authenticated %}
                     
                     <li class="nav-item">
@@ -59,6 +57,9 @@
                     <li class="nav-item">
                         <a class="nav-link"
                            href="{% url 'students:login' %}"> Login</a>
+                    </li>
+                     <li class="nav-item">
+                    <a class="nav-link" href="{% url 'registration' %}">Registration</a>
                     </li>
                 {% endif %}
         </ul>

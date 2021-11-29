@@ -84,5 +84,5 @@ class LogoutStudent(LogoutView):
 class RegistrationStudent(CreateView):
     form_class = RegistrationStudentForm
     template_name = "registration/registration.html"
-    success_url = reverse_lazy("students:list")
+    success_url = reverse_lazy("students:login")
 
