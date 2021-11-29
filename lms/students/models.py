@@ -5,6 +5,7 @@ import datetime
 from faker import Faker
 from students.validators import no_elon_validator
 from courses.models import Course
+from django.contrib.auth.models import User
 
 
 class Person(models.Model):

@@ -1,11 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
-from webargs.djangoparser import use_kwargs, use_args, parser
-from webargs import fields
-from teachers.forms import TeacherBaseForm
 from courses.models import Course
 from teachers.models import Teacher
 
@@ -35,7 +31,7 @@ class GetTeacher(TemplateView):
         return render(request, 'teachers_table.html', context)
 
 
-class CreateTeacher(CreateView):
+class CreateTeacher(LoginRequiredMixin, CreateView):
     # form_class = StudentCreateForm
     template_name = "teacher_create.html"
     fields = "__all__"

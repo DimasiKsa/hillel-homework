@@ -1,13 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.forms.utils import ErrorList
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, DeleteView
 from students.models import Student
 from courses.models import Course
+from students.forms import RegistrationStudentForm
 
 
-class IndexPage(LoginRequiredMixin, TemplateView):
+class IndexPage(TemplateView):
     template_name = "index.html"
 
 
@@ -36,43 +38,51 @@ class GetStudent(TemplateView):
         return render(request, 'students_table.html', context)
 
 
-class CreateStudent(CreateView):
-    # form_class = StudentCreateForm
-    template_name = "students_create.html"
-    fields = "__all__"
-    model = Student
-    initial = {
-        "first_name": "default",
-        "last_name": "default",
-    }
-    success_url = reverse_lazy("students:list")
+class CreateStudent(LoginRequiredMixin, CreateView):
+        template_name = "students_create.html"
+        fields = "__all__"
+        model = Student
+        initial = {
+            "first_name": "default",
+            "last_name": "default",
+        }
+        success_url = reverse_lazy("students:list")
 
-    #
-    # def get_success_url(self):
-    #     return reverse("students:list")
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        first_name = form.cleaned_data["first_name"]
-        last_name = form.cleaned_data["last_name"]
-        if first_name == last_name:
-            form._errors["first_name"] = ErrorList(["dsadas"])
-            form._errors["last_name"] = ErrorList(
-                [u"You already have an email with that name man."])
-            return super().form_invalid(form)
-        return super().form_valid(form)
+        def form_valid(self, form):
+            self.object = form.save(commit=False)
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            if first_name == last_name:
+                form._errors["first_name"] = ErrorList(["dsadas"])
+                form._errors["last_name"] = ErrorList(
+                    [u"You already have an email with that name man."])
+                return super().form_invalid(form)
+            return super().form_valid(form)
 
 
-class UpdateStudent(UpdateView):
+class UpdateStudent(LoginRequiredMixin, UpdateView):
     model = Student
     template_name = "students_update.html"
     fields = "__all__"
     success_url = reverse_lazy("students:list")
 
 
-class DeleteStudent(DeleteView):
+class DeleteStudent(LoginRequiredMixin, DeleteView):
     model = Student
     template_name = "student_delete.html"
     success_url = reverse_lazy("students:list")
 
 
+class LoginStudent(LoginView):
+    pass
+
+
+class LogoutStudent(LogoutView):
+    template_name = "index.html"
+
+
+class RegistrationStudent(CreateView):
+    form_class = RegistrationStudentForm
+    template_name = "registration/registration.html"
+    success_url = reverse_lazy("students:list")
 

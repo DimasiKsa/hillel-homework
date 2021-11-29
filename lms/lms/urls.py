@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.conf.urls import handler404
 import debug_toolbar
 from django.urls import include, path
-from students.views import IndexPage
+from students.views import IndexPage, RegistrationStudent
+
 
 handler404 = 'students.views.page_error.view_404'
 
@@ -29,6 +30,7 @@ urlpatterns = [
     path("__debug__/", include(debug_toolbar.urls)),
     path("students/", include("students.urls")),
     path("teachers/", include("teachers.urls")),
+    path("registration/", RegistrationStudent.as_view(), name="registration")
 ]
 
 
