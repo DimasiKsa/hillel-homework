@@ -1,10 +1,15 @@
 import uuid
+
+from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
 from django.db import models
 import datetime
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from faker import Faker
 from students.validators import no_elon_validator
-from courses.models import Course
+from courses.models import Course, UserType
 from django.contrib.auth.models import User
 
 
@@ -53,4 +58,24 @@ class Student(Person):
                 birthdate=faker.date_time_between(start_date="-30y", end_date="-18y"),
             )
             st.save()
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    birthdate = models.DateField(blank=True, null=True)
+    avatar_image = models.ImageField(upload_to='static/', null=True, blank=True)
+    summary = models.FileField(upload_to='static/', null=True, blank=True)
+    type = models.ForeignKey(UserType, null=True, on_delete=models.SET_NULL)
+
+    # 1 - Student,
+    # 2 - Teacher
+    # 3 -
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+
+@receiver(post_save, sender=User)
+def update_profile_signal(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 

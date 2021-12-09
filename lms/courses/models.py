@@ -17,3 +17,13 @@ class Course(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class UserType(models.Model):
+
+    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+
+    name = models.CharField(null=False, max_length=120)
+
+    def __str__(self):
+        return f"{self.name}"
