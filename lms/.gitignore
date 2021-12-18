@@ -1,6 +1,5 @@
 Pipfile.lock
-venv/
-venv /
+../venv/
 *.sqlite3
 db.sqlite3
 *.pyc

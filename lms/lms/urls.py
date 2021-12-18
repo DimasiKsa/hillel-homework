@@ -30,7 +30,8 @@ urlpatterns = [
     path("__debug__/", include(debug_toolbar.urls)),
     path("students/", include("students.urls")),
     path("teachers/", include("teachers.urls")),
-    path("registration/", RegistrationStudent.as_view(), name="registration")
+    path("registration/", RegistrationStudent.as_view(), name="registration"),
+    path('oauth/', include('social_django.urls'), name='social')
 ]
 
 

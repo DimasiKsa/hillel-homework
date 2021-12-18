@@ -254,6 +254,28 @@ input[type=text]:placeholder {
   width: 100%;
 }
 
+/* Стиль все шрифты иконок */
+.fa {
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+/* Добавить эффект наведения, если вы хотите */
+.fa:hover {
+  opacity: 0.9;
+  text-decoration: none;
+  color: grey;
+}
+
+
+.fa-github {
+  background: #000000;
+  color: white;
+}
+
 
 
 /* OTHERS */
@@ -275,6 +297,7 @@ input[type=text]:placeholder {
             <br>
             <input class="btn btn-info" type="submit" value="Login"/>
         </form>
+       <a  href="{% url 'social:begin' 'github' %}" class="fa fa-github"></a>
     </div>
 </div>
 {% endblock %}
