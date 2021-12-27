@@ -33,7 +33,7 @@
                 <li><a href="{% url 'students:list' %}">All students table</a></li>
                   {% if user.is_authenticated %}
 
-                <a href="#" class="fa fa-facebook"></a>
+
                 <li><a href="{% url 'students:create' %}">Create New Student</a></li>
                   {% endif %}
               </ul>

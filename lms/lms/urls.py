@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.conf.urls import handler404
+from django.conf.urls import handler404, url
 import debug_toolbar
 from django.urls import include, path
 from students.views import IndexPage, RegistrationStudent
@@ -31,7 +31,8 @@ urlpatterns = [
     path("students/", include("students.urls")),
     path("teachers/", include("teachers.urls")),
     path("registration/", RegistrationStudent.as_view(), name="registration"),
-    path('oauth/', include('social_django.urls'), name='social')
+    path('oauth/', include('social_django.urls'), name='social'),
+    path('django_tools/', include('admin_tools.urls'))
 ]
 
 
