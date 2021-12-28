@@ -38,11 +38,10 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_tools',
-    'admin_tools.dashboard',
+    'material',
+    'material.admin',
     'django.contrib.auth',
     'django.contrib.sites',
-    'django.contrib.admin',
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -80,10 +79,8 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "admin_tools.template_loaders.Loader",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
-                "django.core.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'social_django.context_processors.backends',
