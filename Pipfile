@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==3.2.7"
+faker = "*"
+ipython = "*"
+django-extensions = "*"
+webargs = "*"
+flake8 = "*"
+flake8-builtins = "*"
+flake8-import-order = "*"
+pep8-naming = "*"
+django-debug-toolbar = "*"
+black = "==21.7b0"
+django-crispy-forms = "*"
+pillow = "*"
+django_inlinecss = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
