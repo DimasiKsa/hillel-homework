@@ -1,6 +1,4 @@
-from django.utils.html import format_html
 from django.contrib import admin
-from django import forms
 from .models import Student, UserProfile, CustomUser
 
 
